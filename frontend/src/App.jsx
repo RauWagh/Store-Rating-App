@@ -1,26 +1,62 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import UnifiedLogin from './pages/UnifiedLogin';
+import StudentDashboard from './pages/StudentDashboard';
+import TeacherDashboard from './pages/TeacherDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import UserDashboard from './pages/UserDashboard';
-import StoreOwnerDashboard from './pages/StoreOwnerDashboard';
-import StorePage from './pages/StorePage';
-import Login from './components/Login';
-import Register from './components/Register';
+import ProctorDashboard from './pages/ProctorDashboard';
+import ExamInterface from './pages/ExamInterface';
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/store-owner-dashboard" element={<StoreOwnerDashboard />} />
-        <Route path="/store/:id" element={<StorePage />} />
-         
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/store" element={<StorePage />} />
+        <Route path="/" element={<UnifiedLogin />} />
+        <Route path="/login" element={<UnifiedLogin />} />
+        
+        {/* Protected Routes for Different User Roles */}
+        <Route 
+          path="/student-dashboard" 
+          element={
+            <ProtectedRoute role="student">
+              <StudentDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/teacher-dashboard" 
+          element={
+            <ProtectedRoute role="teacher">
+              <TeacherDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin-dashboard" 
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/proctor-dashboard" 
+          element={
+            <ProtectedRoute role="proctor">
+              <ProctorDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/exam/:examId" 
+          element={
+            <ProtectedRoute role="student">
+              <ExamInterface />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
